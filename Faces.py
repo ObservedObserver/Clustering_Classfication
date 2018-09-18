@@ -1,6 +1,9 @@
 from PIL import Image, ImageDraw
 import random, math
-img = Image.open("psb.jpg")
+import matplotlib
+import matplotlib.pyplot as plt
+
+img = Image.open("psb2.jpg")
 draw = ImageDraw.Draw(img)
 
 width = img.size[0]
@@ -65,7 +68,7 @@ class KMeans():
 
 tmp = KMeans(3,points,[width,height,255,255,255])
 text = open("border.csv","w")
-text.write("id,x,y,r,g,b,belong,time\n")
+# text.write("id,x,y,r,g,b,belong,time\n")
 for w in range(0,10):
     print(w)
     tmp.classify()
@@ -80,16 +83,20 @@ for w in range(0,10):
     #     text.write(str(round(point["belong"]))+",")
     #     text.write(str(w)+"\n")
     #     i += 1
-
-i = 0
 for point in tmp.points:
     # print(str(point["pos"][0]))
-    text.write(str(i)+",")
-    text.write(str(round(point["pos"][0]*width))+",")
-    text.write(str(round(point["pos"][1]*height))+",")
-    text.write(str(round(point["color"][0]*255))+",")
-    text.write(str(round(point["color"][1]*255))+",")
-    text.write(str(round(point["color"][2]*255))+",")
-    text.write(str(round(point["belong"]))+"\n")
-    i += 1
-text.close()
+    color = [0, 0, 0]
+    color[round(point["belong"])] = 1
+    x = round(point["pos"][0]*width)
+    y = round(point["pos"][1]*height)
+    if (x%6 == 0) and (y%6 == 0):
+        plt.scatter(x=x/8, y=y/8, c=[color])
+    # text.write(str(i)+",")
+    # text.write(str(round(point["pos"][0]*width))+",")
+    # text.write(str(round(point["pos"][1]*height))+",")
+    # text.write(str(round(point["color"][0]*255))+",")
+    # text.write(str(round(point["color"][1]*255))+",")
+    # text.write(str(round(point["color"][2]*255))+",")
+    # text.write(str(round(point["belong"]))+"\n")
+plt.show()
+# text.close()
